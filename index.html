@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Inventory Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="header">
+    <div>
+      <h1>Smart Inventory Dashboard</h1>
+      <p class="muted">Vanilla JS • LocalStorage • CRUD • Search • Filters</p>
+    </div>
+    <button id="btnAdd" class="btn primary">+ Add Product</button>
+  </header>
+
+  <main class="container">
+    <section class="cards">
+      <div class="card">
+        <div class="label">Total Products</div>
+        <div id="statCount" class="value">0</div>
+      </div>
+      <div class="card">
+        <div class="label">Total Stock Value</div>
+        <div id="statValue" class="value">$0</div>
+      </div>
+      <div class="card warn">
+        <div class="label">Low Stock (≤ 5)</div>
+        <div id="statLow" class="value">0</div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="row">
+        <div class="field grow">
+          <label>Search</label>
+          <input id="q" placeholder="Search by name or SKU..." autocomplete="off">
+        </div>
+
+        <div class="field">
+          <label>Category</label>
+          <select id="categoryFilter">
+            <option value="">All</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Stock</label>
+          <select id="stockFilter">
+            <option value="">All</option>
+            <option value="low">Low stock</option>
+            <option value="ok">In stock</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Sort</label>
+          <select id="sortBy">
+            <option value="updatedAt_desc">Recently updated</option>
+            <option value="name_asc">Name (A→Z)</option>
+            <option value="price_desc">Price (High→Low)</option>
+            <option value="stock_asc">Stock (Low→High)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="tableWrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>SKU</th>
+              <th>Category</th>
+              <th class="right">Price</th>
+              <th class="right">Stock</th>
+              <th class="right">Value</th>
+              <th class="right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+
+      <div id="empty" class="empty hidden">
+        No products found. Add your first product.
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal" class="modal hidden" aria-hidden="true">
+    <div class="modalCard" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modalHeader">
+        <h2 id="modalTitle">Add Product</h2>
+        <button id="btnClose" class="iconBtn" aria-label="Close">✕</button>
+      </div>
+
+      <form id="form" class="form">
+        <input type="hidden" id="id">
+
+        <div class="grid">
+          <div class="field">
+            <label>Name *</label>
+            <input id="name" required maxlength="60" placeholder="e.g. Surgical Mask">
+          </div>
+
+          <div class="field">
+            <label>SKU *</label>
+            <input id="sku" required maxlength="30" placeholder="e.g. AVT-001">
+          </div>
+
+          <div class="field">
+            <label>Category *</label>
+            <input id="category" required maxlength="30" placeholder="e.g. Consumables">
+          </div>
+
+          <div class="field">
+            <label>Price (USD) *</label>
+            <input id="price" required type="number" step="0.01" min="0" placeholder="e.g. 2.50">
+          </div>
+
+          <div class="field">
+            <label>Stock *</label>
+            <input id="stock" required type="number" step="1" min="0" placeholder="e.g. 120">
+          </div>
+
+          <div class="field">
+            <label>Low-stock threshold</label>
+            <input id="threshold" type="number" step="1" min="0" placeholder="default 5">
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="button" id="btnSeed" class="btn">Load Demo Data</button>
+          <div class="spacer"></div>
+          <button type="button" id="btnCancel" class="btn ghost">Cancel</button>
+          <button type="submit" class="btn primary">Save</button>
+        </div>
+
+        <p class="muted small">
+          Data is stored locally in your browser (LocalStorage).
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
